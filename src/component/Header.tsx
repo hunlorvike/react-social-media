@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface AuthUser {
-    id: number;
+    sub: number;
     email: string;
     role: string[];
 }
@@ -18,10 +18,11 @@ const Header: React.FC = () => {
     useEffect(() => {
         // Lấy thông tin người dùng từ localStorage
         const storedUser = localStorage.getItem('accessToken');
-
+        
         if (storedUser) {
             const decodedToken: AuthUser = jwtDecode(storedUser);
             setUser(decodedToken);
+            console.log("user", decodedToken); // Use ',' to log as separate arguments
         } else {
             setUser(null);
         }
@@ -47,7 +48,9 @@ const Header: React.FC = () => {
                 <div>
                     {isAuthenticated && user ? (
                         <>
-                            <span className="text-white mx-2">{user.email}</span>
+                            <Link to={`users/${user.sub}`} className="text-white mx-2">
+                                {user.email}
+                            </Link>
                             <button className="text-white mx-2 bg-blue-500 hover:bg-blue-600 py-1 px-3 rounded"
                                 onClick={handleLogout}>
                                 Logout

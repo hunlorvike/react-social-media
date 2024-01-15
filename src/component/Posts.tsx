@@ -1,7 +1,7 @@
-// src/Posts.tsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import ExportModal from '../../src/component/ExportModal';
 
 interface Post {
     id: number;
@@ -17,6 +17,7 @@ const Posts: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(3);
     const [totalPages, setTotalPages] = useState(1);
+    const [isExportModalOpen, setExportModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -45,6 +46,14 @@ const Posts: React.FC = () => {
         setCurrentPage(pageNumber);
     };
 
+    const handleExportClick = () => {
+        setExportModalOpen(true);
+    };
+
+    const handleExport = (filename: string) => {
+        console.log('Exporting with filename:', filename);
+    };
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -53,10 +62,23 @@ const Posts: React.FC = () => {
         <div className="mx-auto mt-8" style={{ width: '700px' }}>
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-3xl font-bold">Posts</h1>
-                <Link to="/add-post" className="text-white bg-blue-500 px-4 py-2 rounded-md">
-                    Add Post
-                </Link>
+                <div className="flex space-x-4">
+                    <Link to="/add-post" className="text-white bg-blue-500 px-4 py-2 rounded-md">
+                        Add Post
+                    </Link>
+                    <button
+                        onClick={handleExportClick}
+                        className="text-white bg-green-500 px-4 py-2 rounded-md"
+                    >
+                        Export
+                    </button>
+                </div>
             </div>
+            <ExportModal
+                isOpen={isExportModalOpen}
+                onRequestClose={() => setExportModalOpen(false)}
+                onExport={handleExport}
+            />
             <ul>
                 {posts.map(post => (
                     <li key={post.id} className="bg-white rounded-lg shadow-md p-4 mb-4">

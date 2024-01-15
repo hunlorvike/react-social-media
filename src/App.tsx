@@ -6,6 +6,7 @@ import PostDetail from './component/PostDetail';
 import Posts from './component/Posts';
 import Header from './component/Header';
 import AddPost from './pages/AddPost';
+import UserProfile from './component/UserProfile';
 
 const App = () => {
 
@@ -16,6 +17,7 @@ const App = () => {
         <div className="flex-grow w-full bg-[#E6EFFA]">
           <Routes>
             <Route path="/" element={<Navigate to="/posts" replace />} />
+            <Route path="/users/:userId" element={<UserProfile />} />
             <Route path="/posts/:postId" element={<PostDetail />} />
             <Route path="/add-post" element={<AddPost />} />
             <Route path="/posts" element={<Posts />} />
